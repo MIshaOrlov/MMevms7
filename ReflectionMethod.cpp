@@ -90,6 +90,24 @@ int ReflectionInverse(int n, double* matrix, double* adjoint){
     return 1;
 }
 
+
+int multiplyMatrixByVector(int n, double* matrix, double* b, double* result) {
+    // Инициализация результирующего вектора нулями
+    for (int i = 0; i < n; ++i) {
+        result[i] = 0.0;
+    }
+
+    // Перемножение матрицы на вектор
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            result[i] += matrix[i * n + j] * b[j];
+        }
+    }
+    
+    return 1;
+}
+
+
 double ResidualCalc( double* a,  double* b, double* result, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
