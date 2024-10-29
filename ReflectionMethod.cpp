@@ -128,3 +128,64 @@ double ResidualCalc( double* a,  double* b, double* result, int n) {
     }
     return calculateRowNorm(result,n);
 }
+
+
+
+// Функция для LU-разложения пятидиагональной матрицы
+int LU_decomposition(int N, const double* A, double* L, double* U) {
+    // Инициализация L и U как нулевых матриц
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            L[i * N + j] = (i == j) ? 1.0 : 0.0;  // Единичная диагональ для L
+            U[i * N + j] = 0.0;                   // Нулевая матрица для U
+        }
+    }
+
+    // Выполнение LU-разложения
+    for (int i = 0; i < N; ++i) {
+        // Заполнение верхней треугольной матрицы U
+        for (int j = i; j < std::min(i + 3, N); ++j) {  // Пятидиагональная структура
+            U[i * N + j] = A[i * N + j];
+            for (int k = 0; k < i; ++k) {
+                U[i * N + j] -= L[i * N + k] * U[k * N + j];
+            }
+        }
+
+        // Заполнение нижней треугольной матрицы L
+        for (int j = i + 1; j < std::min(i + 3, N); ++j) {  // Пятидиагональная структура
+            L[j * N + i] = A[j * N + i];
+            for (int k = 0; k < i; ++k) {
+                L[j * N + i] -= L[j * N + k] * U[k * N + i];
+            }
+            L[j * N + i] /= U[i * N + i];
+        }
+    }
+    
+    return 1;
+}
+
+
+int solve_LU(int N, const double* L, const double* U, double* X, const double* B) {
+    double* Y = new double[N];  // Временный массив для решения LY = B
+
+    // Прямой ход: решаем LY = B
+    for (int i = 0; i < N; ++i) {
+        Y[i] = B[i];
+        for (int j = 0; j < i; ++j) {
+            Y[i] -= L[i * N + j] * Y[j];
+        }
+        Y[i] /= L[i * N + i];  // Поскольку L имеет единичную диагональ, это просто Y[i] = Y[i]
+    }
+
+    // Обратный ход: решаем UX = Y
+    for (int i = N - 1; i >= 0; --i) {
+        X[i] = Y[i];
+        for (int j = i + 1; j < N; ++j) {
+            X[i] -= U[i * N + j] * X[j];
+        }
+        X[i] /= U[i * N + i];
+    }
+
+    delete[] Y;  // Освобождение памяти для временного массива
+    return 1;
+}

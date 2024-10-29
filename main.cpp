@@ -1,3 +1,12 @@
+/*
+ 3 Построить разностную схему со вторым порядком аппроксимации и найти ее решение при раз-
+ личных значениях h:
+ u(4) + u(3)+ sinx · u = ex2,
+ u(0) = u′(0) = 0, u(1) = 1, u′(1) = 0
+ Исследовать построенную разностную схему на устойчивость и сходимость.
+ */
+
+
 #include <iostream>
 #include <cstdlib>        // Для std::stod
 #include <ctime>          // Для измерения времени работы алгоритма
@@ -30,17 +39,21 @@ int main(int argc, char* argv[]) {
 
     // Выделяем память под матрицы и векторы
     double* matrix = new double[n * n];   // Матрица A
-    double* adjoint = new double[n * n];  // Обратная матрица
     double* b = new double[n];            // Вектор правой части
     double* x = new double[n];            // Вектор сетки (x)
     double* u = new double[n];            // Вектор решения u
-
+    // Массивы для коэффициентов метода прогонки
+    double* L = new double[n * n];
+    double* U = new double[n * n];
+    
+    
+    
     // Измеряем время выполнения
     clock_t t;
     t = clock();
 
     // Решаем задачу методом конечных разностей
-    int res = SolveFiniteDifference(n, matrix, b, u, x, h, adjoint);
+    int res = SolveFiniteDifference(n, matrix, b, u, x, h, L,U);
 
     // Если не удалось найти решение (обратную матрицу), выводим сообщение
     if (res == -1) {
@@ -68,10 +81,12 @@ int main(int argc, char* argv[]) {
 
     // Освобождаем выделенную память
     delete[] matrix;
-    delete[] adjoint;
     delete[] b;
     delete[] x;
     delete[] u;
+    delete[] L;
+    delete[] U;
+    
 
     return 0;
 }

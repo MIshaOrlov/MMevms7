@@ -5,8 +5,9 @@ double ex2(double x) {
     return exp(x * x);
 }
 
+
 // Основная функция решения методом конечных разностей
-int SolveFiniteDifference(int N, double* A, double* B, double* u, double* x, double h, double* adjoint) {
+int SolveFiniteDifference(int N, double* A, double* B, double* u, double* x, double h, double* L, double* U){
     // Инициализация сетки x
     for (int i = 0; i < N; ++i) {
         x[i] = i * h;
@@ -52,28 +53,12 @@ int SolveFiniteDifference(int N, double* A, double* B, double* u, double* x, dou
     B[N - 1] = 1.0;
     B[N - 2] = 0.0;
 
-    // Вывод матрицы A
-    //printMatrix(A, N, N);
 
-    // Инверсия матрицы методом отражений
-    int res = ReflectionInverse(N, A, adjoint);
 
-    if (res == -1) {
-        std::cout << "Не существует обратной матрицы" << std::endl;
-        return -1;
-    }
+    LU_decomposition(N, A,L,U);
+    solve_LU(N, L, U, u, B);
 
-    // Умножение инвертированной матрицы на вектор B для получения u
-    multiplyMatrixByVector(N, adjoint, B, u);
-
-    // Вывод результатов в файл
-   /* std::ofstream outfile("solution.txt");
-    for (int i = 0; i < N; ++i) {
-        outfile << x[i] << " " << u[i] << std::endl;
-    }
-    outfile.close();
-
-    std::cout << "Решение сохранено в файл 'solution.txt'." << std::endl;*/
+    
 
     return 1;
 }

@@ -13,7 +13,8 @@ SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/DiffSolver.cpp $(SRC_DIR)/Matrix.cpp $(SRC
 TARGET = $(BIN_DIR)/solver
 
 # Значения h, для которых будем строить графики и замерять время
-HS = 0.5 0.2 0.1 0.05 0.025 0.01 0.005 0.0025 0.001
+HS =  0.1 0.05  0.01 0.005  0.001 0.0005 0.0001
+
 
 # Файл для записи времени выполнения
 TIMING_FILE = timing_results.txt
