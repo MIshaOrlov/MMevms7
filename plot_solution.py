@@ -6,7 +6,8 @@ def read_solution(filename):
     u_data = []
     with open(filename, 'r') as file:
         for line in file:
-            x, u = map(float, line.split())
+            # Считываем только первые два столбца x и u, игнорируя третий
+            x, u, _ = map(float, line.split()[:3])
             x_data.append(x)
             u_data.append(u)
     return x_data, u_data
@@ -35,4 +36,5 @@ if __name__ == "__main__":
     h = sys.argv[3]
 
     x_data, u_data = read_solution(input_file)
+    
     plot_solution(x_data, u_data, output_image, h)
