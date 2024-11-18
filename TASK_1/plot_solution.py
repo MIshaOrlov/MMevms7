@@ -6,7 +6,6 @@ def read_solution(filename):
     u_data = []
     with open(filename, 'r') as file:
         for line in file:
-            # Считываем только первые два столбца x и u, игнорируя третий
             x, u, _ = map(float, line.split()[:3])
             x_data.append(x)
             u_data.append(u)
@@ -22,7 +21,6 @@ def plot_solution(x_data, u_data, output_image, h):
     plt.legend()
     plt.grid(True)
     
-    # Сохранение графика в файл
     plt.savefig(output_image)
     plt.close()
 

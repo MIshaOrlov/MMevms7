@@ -74,8 +74,6 @@ void RungeKutta2( double (*func)(double), double h, const double y0[], double x_
 
 
 // Метод Рунге-Кутты четвертого порядка для системы ОДУ
-
-// Метод Рунге-Кутты четвертого порядка для системы ОДУ
 void RungeKutta4(double (*func)(double), double h, const double y0[], double x_vals[], double y_vals[], int N_points, int dim) {
 
     // Инициализация массивов
